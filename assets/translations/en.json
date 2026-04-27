@@ -1,0 +1,17 @@
+{
+  "tagline": "Where Hope Begins & Fertility is Reclaimed",
+  "app_name": "Heal360 Wellness",
+  "welcome": "Welcome",
+  "enter_mobile_desc": "Enter your mobile number to login or create\nan account automatically.",
+  "mobile_number": "Mobile Number",
+  "send_otp": "Send OTP",
+  "verify_otp": "Verify OTP",
+  "otp_sent_to": "We sent a 6-digit OTP to\n",
+  "change_number": "Change Number",
+  "resend_in": "Resend in {}s",
+  "resend_otp": "Resend OTP",
+  "verify_and_continue": "Verify & Continue",
+  "terms_policy": "By continuing, you agree to our Terms of Service\n& Privacy Policy",
+  "select_language": "Select Language",
+  "login_success": "Logged in successfully!"
+}

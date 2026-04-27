@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hells360/core/constant/app_images.dart';
 import 'package:hells360/core/constant/app_textstyle.dart';
 import 'package:hells360/core/constant/app_theme.dart';
-import 'package:hells360/feature/authentication/view/login_register_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -28,12 +30,14 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
 
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor          : Colors.transparent,
-      statusBarIconBrightness : Brightness.light,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
     _logoController = AnimationController(
-      vsync   : this,
+      vsync: this,
       duration: const Duration(milliseconds: 900),
     );
     _logoScale = Tween<double>(begin: 0.6, end: 1.0).animate(
@@ -42,30 +46,32 @@ class _SplashScreenState extends State<SplashScreen>
     _logoOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _logoController,
-        curve : const Interval(0.0, 0.6, curve: Curves.easeIn),
+        curve: const Interval(0.0, 0.6, curve: Curves.easeIn),
       ),
     );
     _textController = AnimationController(
-      vsync   : this,
+      vsync: this,
       duration: const Duration(milliseconds: 600),
     );
-    _textOpacity = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(CurvedAnimation(parent: _textController, curve: Curves.easeIn));
+    _textOpacity = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _textController, curve: Curves.easeIn));
     _textSlide = Tween<Offset>(
       begin: const Offset(0, 0.3),
-      end  : Offset.zero,
+      end: Offset.zero,
     ).animate(CurvedAnimation(parent: _textController, curve: Curves.easeOut));
     _taglineController = AnimationController(
-      vsync   : this,
+      vsync: this,
       duration: const Duration(milliseconds: 500),
     );
     _taglineOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _taglineController, curve: Curves.easeIn),
     );
-    _taglineSlide = Tween<Offset>(
-      begin: const Offset(0, 0.4),
-      end  : Offset.zero,
-    ).animate(CurvedAnimation(parent: _taglineController, curve: Curves.easeOut));
+    _taglineSlide = Tween<Offset>(begin: const Offset(0, 0.4), end: Offset.zero)
+        .animate(
+          CurvedAnimation(parent: _taglineController, curve: Curves.easeOut),
+        );
 
     _runSequence();
   }
@@ -83,14 +89,7 @@ class _SplashScreenState extends State<SplashScreen>
     await Future.delayed(const Duration(milliseconds: 1200));
     if (!mounted) return;
 
-    Navigator.of(context).pushReplacement(
-      PageRouteBuilder(
-        pageBuilder        : (_, __, ___) => const LoginRegisterScreen(),
-        transitionsBuilder : (_, anim, __, child) =>
-            FadeTransition(opacity: anim, child: child),
-        transitionDuration : const Duration(milliseconds: 500),
-      ),
-    );
+    context.goNamed('login');
   }
 
   @override
@@ -108,9 +107,9 @@ class _SplashScreenState extends State<SplashScreen>
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin  : Alignment.topLeft,
-            end    : Alignment.bottomRight,
-            colors : [Color(0xFFF8F8F8), Color(0xFFF2EDF0)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFFF8F8F8), Color(0xFFF2EDF0)],
           ),
         ),
         child: SafeArea(
@@ -122,25 +121,25 @@ class _SplashScreenState extends State<SplashScreen>
 
                 const SizedBox(height: 32),
                 FadeTransition(
-                  opacity : _textOpacity,
-                  child   : SlideTransition(
+                  opacity: _textOpacity,
+                  child: SlideTransition(
                     position: _textSlide,
-                    child   : _buildBrandName(),
+                    child: _buildBrandName(),
                   ),
                 ),
 
                 const SizedBox(height: 10),
                 FadeTransition(
-                  opacity : _taglineOpacity,
-                  child   : SlideTransition(
+                  opacity: _taglineOpacity,
+                  child: SlideTransition(
                     position: _taglineSlide,
-                    child   : Text(
-                      'Where Hope Begins & Fertility is Reclaimed',
+                    child: Text(
+                      'tagline'.tr(),
                       textAlign: TextAlign.center,
-                      style    : AppTextStyle.grey13.copyWith(
-                        fontStyle    : FontStyle.italic,
+                      style: AppTextStyle.grey13.copyWith(
+                        fontStyle: FontStyle.italic,
                         letterSpacing: 0.3,
-                        height       : 1.4,
+                        height: 1.4,
                       ),
                     ),
                   ),
@@ -149,12 +148,12 @@ class _SplashScreenState extends State<SplashScreen>
                 const SizedBox(height: 60),
                 FadeTransition(
                   opacity: _taglineOpacity,
-                  child  : SizedBox(
-                    width : 36,
+                  child: SizedBox(
+                    width: 36,
                     height: 3,
-                    child : LinearProgressIndicator(
+                    child: LinearProgressIndicator(
                       backgroundColor: AppColors.divider,
-                      valueColor      : const AlwaysStoppedAnimation<Color>(
+                      valueColor: const AlwaysStoppedAnimation<Color>(
                         AppColors.primary,
                       ),
                       borderRadius: BorderRadius.circular(2),
@@ -172,32 +171,29 @@ class _SplashScreenState extends State<SplashScreen>
   Widget _buildAnimatedLogo() {
     return AnimatedBuilder(
       animation: _logoController,
-      builder  : (_, child) => Transform.scale(
-        scale  : _logoScale.value,
-        child  : Opacity(opacity: _logoOpacity.value, child: child),
+      builder: (_, child) => Transform.scale(
+        scale: _logoScale.value,
+        child: Opacity(opacity: _logoOpacity.value, child: child),
       ),
       child: Container(
-        width     : 160,
-        height    : 160,
+        width: 160,
+        height: 160,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
-          color       : Colors.white,
-          boxShadow   : [
-            BoxShadow(
-              color      : AppColors.shadow,
-              blurRadius : 30,
-              spreadRadius: 2,
-              offset     : const Offset(0, 10),
-            ),
-          ],
+          color: Colors.white,
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: AppColors.shadow,
+          //     blurRadius: 30,
+          //     spreadRadius: 2,
+          //     offset: const Offset(0, 10),
+          //   ),
+          // ],
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child       : Image.asset(
-            AppImages.appLogo,
-            fit         : BoxFit.contain,
-            errorBuilder: (_, __, ___) => _buildLogoFallback(),
-          ),
+        child: Image.asset(
+          AppImages.appLogo,
+          fit: BoxFit.contain,
+          errorBuilder: (_, __, ___) => _buildLogoFallback(),
         ),
       ),
     );
@@ -207,20 +203,14 @@ class _SplashScreenState extends State<SplashScreen>
     return RichText(
       text: TextSpan(
         children: [
+          TextSpan(text: 'Heal', style: AppTextStyle.displayLarge),
           TextSpan(
-            text : 'Heal',
-            style: AppTextStyle.displayLarge,
-          ),
-          TextSpan(
-            text : '360 ',
+            text: '360 ',
             style: AppTextStyle.displayLarge.copyWith(
               color: AppColors.gradientBottom,
             ),
           ),
-          TextSpan(
-            text : 'Wellness',
-            style: AppTextStyle.displayLarge,
-          ),
+          TextSpan(text: 'Wellness', style: AppTextStyle.displayLarge),
         ],
       ),
     );
@@ -234,7 +224,7 @@ class _SplashScreenState extends State<SplashScreen>
           'H360',
           style: AppTextStyle.white20bold.copyWith(
             fontFamily: AppFonts.georgia,
-            fontSize  : 32,
+            fontSize: 32,
           ),
         ),
       ),

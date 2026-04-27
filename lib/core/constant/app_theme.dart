@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  static const Color primary       = Color(0xFF7A1E3A); // Deep Wine / Maroon
+  static const Color primary       = Color(0xFF7A1E3A); 
   static const Color gradientTop   = Color(0xFF8E2448);
   static const Color gradientBottom= Color(0xFFB23A5B);
 
@@ -47,7 +47,3 @@ class AppColors {
   static const Color otpBoxActive = Color(0xFF7A1E3A);
 }
 
-class AppImages {
-  AppImages._();
-  static const String appLogo = 'assets/images/applogo.png';
-}
